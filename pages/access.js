@@ -22,14 +22,14 @@ function Access() {
 
   // Fetch data from Fitbit API using the accessToken & the userId
   useEffect(async () => {
-    const response = await axios
+    // Link for intraday for personal
+    // "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
 
+    const response = await axios
       .get(
-        "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
-        // .get(
-        //   "https://api.fitbit.com/1/user/" +
-        //     userId +
-        //     "/activities/heart/date/today/1w.json",
+        "https://api.fitbit.com/1/user/" +
+          userId +
+          "/activities/heart/date/today/1w.json",
         { headers: { Authorization: "Bearer " + accessToken } }
       )
       .then(res => {

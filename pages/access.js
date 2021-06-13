@@ -1,44 +1,60 @@
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useState, useEffect } from "react";
 
 function Access() {
+  const [heartData, setHeartData] = useState();
+
   const router = useRouter();
 
-  // Get Access Token & User ID
-  const query = router.asPath; //To get the query string
-  var splitQuery = query.split("=");
-  var accessToken = splitQuery[1];
-  var userId = splitQuery[2];
+  useEffect(() => {
+    // Get Access Token & User ID
+    const query = router.asPath; //To get the query string
+    var splitQuery = query.split("=");
+    var accessToken = splitQuery[1];
+    var userId = splitQuery[2];
 
-  // if statement to deal with the error of empty string (dont why that is happens occasionally, maybe a machine problem.)
-  if (accessToken != undefined && userId != undefined) {
-    accessToken = accessToken.split("&")[0];
-    userId = userId.split("&")[0];
-  }
+    // if statement to deal with the error of empty string (dont why that is happens occasionally, maybe a machine problem.)
+    if (accessToken != undefined && userId != undefined) {
+      accessToken = accessToken.split("&")[0];
+      userId = userId.split("&")[0];
+    }
 
-  // Fetch data from Fitbit API using the accessToken & the userId
-  axios
-    .get(
-      "https://api.fitbit.com/1/user/" +
-        userId +
-        "/activities/heart/date/today/1w.json",
-      { headers: { Authorization: "Bearer " + accessToken } }
-    )
-    .then(res => {
-      const heartData = res.data;
-      console.log(heartData);
-    })
-    .catch(error => {
-      console.log("error " + error);
-    });
+    // Fetch data from Fitbit API using the accessToken & the userId
+    axios
+      .get(
+        "https://api.fitbit.com/1/user/" +
+          userId +
+          "/activities/heart/date/today/1w.json",
+        { headers: { Authorization: "Bearer " + accessToken } }
+      )
+      .then(res => {
+        setHeartData(res.data);
+      })
+      .catch(error => {
+        console.log("error " + error);
+      });
 
-  console.log(splitQuery);
-  console.log(accessToken);
-  console.log(userId);
+    console.log(splitQuery);
+    console.log(accessToken);
+    console.log(userId);
+    console.log(heartData);
+  }, []);
+
   return (
-    <div>
-      <h1>Access</h1>
-    </div>
+    <center>
+      {heartData ? (
+        <div>
+          <h1 className="text-4xl p-3">Access Successful</h1>
+          <p>Thank you for your time!</p>
+        </div>
+      ) : (
+        <div>
+          <h1 className="text-4xl p-3">Access Unsuccessful</h1>
+          <p>We were not able to fetch your data. Please try again!</p>
+        </div>
+      )}
+    </center>
   );
 }
 

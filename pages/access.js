@@ -4,24 +4,25 @@ import { useState, useEffect } from "react";
 
 function Access() {
   const [heartData, setHeartData] = useState();
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
 
-  useEffect(() => {
-    // Get Access Token & User ID
-    const query = router.asPath; //To get the query string
-    var splitQuery = query.split("=");
-    var accessToken = splitQuery[1];
-    var userId = splitQuery[2];
+  // Get Access Token & User ID
+  const query = router.asPath; //To get the query string
+  var splitQuery = query.split("=");
+  var accessToken = splitQuery[1];
+  var userId = splitQuery[2];
 
-    // if statement to deal with the error of empty string (dont why that is happens occasionally, maybe a machine problem.)
-    if (accessToken != undefined && userId != undefined) {
-      accessToken = accessToken.split("&")[0];
-      userId = userId.split("&")[0];
-    }
+  // if statement to deal with the error of empty string (dont why that is happens occasionally, maybe a machine problem.)
+  if (accessToken != undefined && userId != undefined) {
+    accessToken = accessToken.split("&")[0];
+    userId = userId.split("&")[0];
+  }
 
-    // Fetch data from Fitbit API using the accessToken & the userId
-    axios
+  // Fetch data from Fitbit API using the accessToken & the userId
+  useEffect(async () => {
+    const response = await axios
       .get(
         "https://api.fitbit.com/1/user/" +
           userId +
@@ -29,21 +30,27 @@ function Access() {
         { headers: { Authorization: "Bearer " + accessToken } }
       )
       .then(res => {
-        setHeartData(res.data);
+        return res.data;
       })
       .catch(error => {
         console.log("error " + error);
       });
-
-    console.log(splitQuery);
-    console.log(accessToken);
-    console.log(userId);
-    console.log(heartData);
+    setHeartData(response);
+    setLoading(false);
   }, []);
+
+  // console.log(splitQuery);
+  // console.log(accessToken);
+  // console.log(userId);
+  console.log(heartData);
 
   return (
     <center>
-      {heartData ? (
+      {loading ? (
+        <div>
+          <h1 className="text-4xl p-3">Loading...</h1>
+        </div>
+      ) : heartData ? (
         <div>
           <h1 className="text-4xl p-3">Access Successful</h1>
           <p>Thank you for your time!</p>

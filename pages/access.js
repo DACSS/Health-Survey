@@ -24,7 +24,6 @@ function Access() {
   useEffect(async () => {
     // Link for intraday for personal
     // "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
-
     const response = await axios
       .get(
         "https://api.fitbit.com/1/user/" +

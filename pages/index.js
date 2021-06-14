@@ -1,6 +1,6 @@
 export default function Home() {
   const authUrl =
-    "https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=23B8TB&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Faccess%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800";
+    "https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=23B8TB&redirect_uri=https%3A%2F%2Fdacss.github.io%2FHealth-Survey%2Faccess&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800";
 
   return (
     <center>

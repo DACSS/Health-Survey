@@ -24,11 +24,12 @@ function Access() {
   useEffect(async () => {
     // Link for intraday for personal
     // "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
+    // https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1sec
     const response = await axios
       .get(
         "https://api.fitbit.com/1/user/" +
           userId +
-          "/activities/heart/date/today/1w.json",
+          "/activities/heart/date/today/1d/1sec.json",
         { headers: { Authorization: "Bearer " + accessToken } }
       )
       .then(res => {

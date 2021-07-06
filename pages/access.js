@@ -40,12 +40,12 @@ function Access() {
       });
     setHeartData(response);
     setLoading(false);
+    console.log("Heartrate Data :", response["activities-heart-intraday"]);
   }, []);
 
   // console.log(splitQuery);
   // console.log(accessToken);
   // console.log(userId);
-  console.log(heartData);
 
   return (
     <center>
